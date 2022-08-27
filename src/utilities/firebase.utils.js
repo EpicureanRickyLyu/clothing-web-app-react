@@ -1,12 +1,14 @@
+//firestore db
 import {getFirestore,doc,getDoc,setDoc} from 'firebase/firestore'
-
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";//create an app instance
-import {getAuth,signInWithRedirect,signInWithPopup,GoogleAuthProvider} from 'firebase/auth'
-import signin from "../routes/signin/signin.component";
-import { async } from '@firebase/util';
-import { useReducer } from 'react';
+import {getAuth,signInWithRedirect,signInWithPopup,
+    signInWithPhoneNumber,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    createUserWithEmailAndPassword} from 'firebase/auth'
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,6 +25,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
+const Facebookprovider = new FacebookAuthProvider()
+//use 不同的provider提供不同的auth，比如facebook，twitter等
 provider.setCustomParameters(
     {
         prompt : "select_account"
@@ -31,37 +35,40 @@ provider.setCustomParameters(
 
 export const auth = getAuth();
 export const signinwithgooglePopup = () => signInWithPopup(auth,provider);
-
-////=---------firebase db
-
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth,provider);
+export const createAuthUserWithEmailAndPassword = async (email,password) => {
+    if(!email||!password) return;
+    
+    console.log("email create success");
+    return await createUserWithEmailAndPassword(auth, email, password)
+    
+}
+////=---------firebase firestore db------------------///
+//firestore based on Doc model
 const db = getFirestore(); 
-export const createUserDocFrom = async (userAuth) =>{
-    console.log("db :",db);
-    console.log(userAuth);
-    const userDocRef = doc(db,'users',userAuth.user.uid);
-    console.log(userDocRef);
-
+export const createUserDocFrom = async (userAuth,addtionalInfo = {}) =>{
+    
+    const userDocRef = doc(db,'users',userAuth.uid);
     const userSnapshot = await getDoc(userDocRef)
-    //console.log(userSnapshot);
-    console.log(userSnapshot.exists());
+
 
     if(!userSnapshot.exists())
     {
-        const {displayName,email} = userAuth.user;
+        const {username,email} = userAuth;
         const createAt = new Date();
         try {
             await setDoc( userDocRef,
-                {displayName,
+                {username,
                 email,
-                createAt,},
+                createAt,
+                ...addtionalInfo },//passed username will overwrite default
             )
+            alert("register success");
+            console.log("create doc success");
         } catch (error) {
             console.log('create user error', error.message);
         }
     }
-    else
-    {
-
-    }
+    
     return userDocRef;
 };
