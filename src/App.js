@@ -1,9 +1,8 @@
 
 import Home from './routes/home/home.components';
-import { Route,Routes,Outlet } from 'react-router-dom';// use url to render
+import { Route,Routes} from 'react-router-dom';// use url to render
 import Navigation from './routes/navigation/navigation.component';
-import Signin from './routes/signin/signin.component';
-import Signup from './routes/signup/signup.component';
+import Authentication from './routes/authentication/authentication.component';
 //new component
 const Shop = () =>{
   return(
@@ -21,7 +20,7 @@ const App = () => {
 
         <Route index element ={<Home />}></Route>
         <Route path='shop' element = {<Shop/>}></Route>
-        <Route path='sign-in' element = {<Signin/>}></Route>
+        <Route path='auth' element = {<Authentication/>}></Route>
      
       </Route>
 

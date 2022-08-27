@@ -1,0 +1,21 @@
+.sign-in-container {
+  
+    display: flex;
+    flex-direction: column ;
+    width: 380px;
+
+    .sign-page-text{
+        margin: 20px auto;
+        
+    }
+    span{
+        float: right;
+    }
+
+    .buttons-container{
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+

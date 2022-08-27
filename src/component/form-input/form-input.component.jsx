@@ -1,4 +1,4 @@
-import './signup.scss'
+import './forminput.scss'
 const Forminput  = ({label,...otherProps}) =>
 {
     return(

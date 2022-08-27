@@ -1,11 +1,9 @@
 
-import { Fragment } from "react";
-import { Outlet } from "react-router-dom";
 import { useState } from "react";
-import { auth, createAuthUserWithEmailAndPassword, createUserDocFrom } from "../../utilities/firebase.utils";
-import Forminput from "../../component/form-input/form-input.component";
+import {createAuthUserWithEmailAndPassword, createUserDocFrom } from "../../utilities/firebase.utils";
+import Forminput from "../form-input/form-input.component";
 import './sign-up-form.scss'
-import Button from "../../component/cutombutton/custombutton.component";
+import Button from "../cutombutton/custombutton.component";
 const defaultformcontent = [{
     username : '',
     email :'',
@@ -84,33 +82,31 @@ const Signup = () => {
 
     }
     return(
-        <Fragment>
+        
         <div className="sign-up-container">
-            <h2>Don`t have an account? </h2>
-            <span>sign up with your email</span>
+            
             <form onSubmit={SubmitHandler}>
                 
-                <Forminput label="username" 
+                {/* <Forminput label="username" 
                 inputoption = {{
                     type : "text" ,
                     required : true,
                     onChange : handleChange ,
                     name : "username" ,
                     value : "username" ,
-                    }}></Forminput>
+                    }}></Forminput> */}
                 
-                
+                <Forminput label="username" required onChange={handleChange} name = "username" value = {username}></Forminput>
                 <Forminput label="Email"  type = "email" required onChange={handleChange} name = "email" value = {email}></Forminput>
                
                 <Forminput label="Password"  type = "password" required onChange={handleChange} name = "password" value = {password}></Forminput>
 
                 <Forminput label="confirmPassword"  type="password" required onChange={handleChange} name = "confirmPassword" value = {confirmPassword}></Forminput>
-                <Button buttontype = "google" type="submit" >sign in</Button>
+                <Button buttontype = "google" type="submit" >sign up</Button>
             </form>
-            <Button children="testbtn" />
             
         </div>
-        </Fragment>
+        
     )
 }
 

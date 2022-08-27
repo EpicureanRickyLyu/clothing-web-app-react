@@ -7,7 +7,9 @@ import {getAuth,signInWithRedirect,signInWithPopup,
     signInWithPhoneNumber,
     GoogleAuthProvider,
     FacebookAuthProvider,
-    createUserWithEmailAndPassword} from 'firebase/auth'
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+} from 'firebase/auth'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -41,7 +43,12 @@ export const createAuthUserWithEmailAndPassword = async (email,password) => {
     
     console.log("email create success");
     return await createUserWithEmailAndPassword(auth, email, password)
+}
+export const signInAuthWithEmailAndPassword = async (email,password) => {
+    if(!email||!password) return;
     
+    console.log("sign in success");
+    return await signInWithEmailAndPassword(auth, email, password)
 }
 ////=---------firebase firestore db------------------///
 //firestore based on Doc model
