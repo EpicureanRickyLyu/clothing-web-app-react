@@ -5,7 +5,7 @@ import Forminput from "../form-input/form-input.component";
 import './sign-up-form.scss'
 import Button from "../cutombutton/custombutton.component";
 const defaultformcontent = [{
-    username : '',
+    displayName : '',
     email :'',
     password : '',
     confirmPassword :'',
@@ -17,11 +17,10 @@ const Signup = () => {
     const [formfields,setformfields] = useState(defaultformcontent);
    
     //destrcuture formfields
-    const {username,email,password,confirmPassword} = formfields;
+    const {displayName,email,password,confirmPassword} = formfields;
 
     const resetFormfields = () =>
     {
-        setformfields(null);
         //do not refresh page?????????????
         setformfields(defaultformcontent);
     }
@@ -37,6 +36,7 @@ const Signup = () => {
         const {name,value} = event.target;
         setformfields({...formfields,[name]:value});
     }
+    //注册事件，register
     const SubmitHandler = async (event) =>
     {
         //alert("submit sucess");
@@ -49,7 +49,7 @@ const Signup = () => {
                const {user} = await createAuthUserWithEmailAndPassword(email,password);
                //const {user} = response;
                //存入数据库firestore
-               await createUserDocFrom(user,{username});
+               await createUserDocFrom(user,{displayName});
                resetFormfields();//刷新表单 
             }
             catch(error)
@@ -96,7 +96,7 @@ const Signup = () => {
                     value : "username" ,
                     }}></Forminput> */}
                 
-                <Forminput label="username" required onChange={handleChange} name = "username" value = {username}></Forminput>
+                <Forminput label="displayName" required onChange={handleChange} name = "displayName" value = {displayName}></Forminput>
                 <Forminput label="Email"  type = "email" required onChange={handleChange} name = "email" value = {email}></Forminput>
                
                 <Forminput label="Password"  type = "password" required onChange={handleChange} name = "password" value = {password}></Forminput>

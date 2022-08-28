@@ -1,14 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
+import { UserProvider } from './context/user.context';
+import { ProductProvider } from './context/product.context';
+import { CartProvider } from './context/cart-context.context';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//user go in to children of product
 root.render(
-<BrowserRouter>
-    <App />
+<BrowserRouter>    
+        <UserProvider>    
+            <ProductProvider>
+                <CartProvider>
+                <App />
+                </CartProvider>
+            </ProductProvider>
+        </UserProvider>       
 </BrowserRouter>
 );
 

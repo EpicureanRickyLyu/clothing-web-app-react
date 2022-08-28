@@ -1,6 +1,6 @@
 import { useState ,useEffect} from "react";
 import { getRedirectResult } from "firebase/auth";
-import { auth, createUserDocFrom } from "../../utilities/firebase.utils"; //distingguish import funtion and component
+import { auth } from "../../utilities/firebase.utils"; //distingguish import funtion and component
 import { signinwithgooglePopup, signInWithGoogleRedirect,signInAuthWithEmailAndPassword} from "../../utilities/firebase.utils";
 import Forminput from "../../component/form-input/form-input.component";
 import Button from "../../component/cutombutton/custombutton.component";
@@ -14,19 +14,15 @@ const Signin  = () => {
    
     //initialize formfields
     const [formfields,setformfields] = useState(defaultformcontent);
-   
     //destrcuture formfields
     const {email,password} = formfields;
+
     //console.log(formfields);
+    //重定向的页面，创建用户doc
     useEffect(() => {
         async function fetchRedirectResult()
         {
-            const response = await getRedirectResult(auth);
-            if(response)
-            {
-                const {user} = response
-                await createUserDocFrom(user);
-            } 
+           await getRedirectResult(auth);
         }
         fetchRedirectResult();
     },[]);
@@ -35,8 +31,7 @@ const Signin  = () => {
         //获取google给的auth信息，内部有一个user参数，里面包含uid
         try
         {
-            const {user}= await signinwithgooglePopup();
-            await createUserDocFrom(user);
+            await signinwithgooglePopup();
         }
         catch(error)
         {
@@ -44,7 +39,6 @@ const Signin  = () => {
         }
     }
    
-
     const resetFormfields = () =>
     {
         setformfields(null);
@@ -58,18 +52,19 @@ const Signin  = () => {
         formfields.confirmPassword = '';
         //console.log(formfields);
     }
-
+    //pass value from input bar to formfields
     const handleChange = (event) =>{
         const {name,value} = event.target;
         setformfields({...formfields,[name]:value});
     }
-    const SubmitHandler = async (event) =>
+    //confirm password
+    const SigninHandler = async (event) =>
     {
         //alert("submit sucess");
         event.preventDefault();///阻止所有默认的表单操作，自动刷新页面等
         try{
-            const response = await signInAuthWithEmailAndPassword(email,password);
-            console.log(response);
+            const {user} = await signInAuthWithEmailAndPassword(email,password);// confirm password
+            console.log("sign in user :",user);
             //resetFormfields();//刷新表单 
         }
         catch(error)
@@ -88,15 +83,12 @@ const Signin  = () => {
                 default:
                 console.log(error);
             }
-
-         
-   
         }
     }
     return(
         
         <div className="sign-in-container">           
-            <form onSubmit={SubmitHandler}>
+            <form onSubmit={SigninHandler}>
                 
                 <Forminput label="email" required onChange={handleChange} name = "email" value = {email}></Forminput>
                

@@ -1,7 +1,7 @@
 
 import Signup from "../../component/signup/signup.component";
 import Signin from "../../component/signin/signinform.component";
-import './sign-in-container.scss'
+import './authentication.scss'
 ////////开头大写才能被识别成component
 const Authentication = () => {
  

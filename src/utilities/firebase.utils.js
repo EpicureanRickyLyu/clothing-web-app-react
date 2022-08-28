@@ -9,6 +9,9 @@ import {getAuth,signInWithRedirect,signInWithPopup,
     FacebookAuthProvider,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+
 } from 'firebase/auth'
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -50,6 +53,13 @@ export const signInAuthWithEmailAndPassword = async (email,password) => {
     console.log("sign in success");
     return await signInWithEmailAndPassword(auth, email, password)
 }
+export const SignoutUser = () =>{
+    signOut(auth);
+}
+export const OnAuthstatecahngeListener = (callback) => {
+    if(!callback) return;
+    onAuthStateChanged(auth,callback);
+}
 ////=---------firebase firestore db------------------///
 //firestore based on Doc model
 const db = getFirestore(); 
@@ -61,17 +71,17 @@ export const createUserDocFrom = async (userAuth,addtionalInfo = {}) =>{
 
     if(!userSnapshot.exists())
     {
-        const {username,email} = userAuth;
+        const {displayName,email} = userAuth;
         const createAt = new Date();
         try {
             await setDoc( userDocRef,
-                {username,
+                {displayName,
                 email,
                 createAt,
                 ...addtionalInfo },//passed username will overwrite default
             )
+            console.log("create doc in db success");
             alert("register success");
-            console.log("create doc success");
         } catch (error) {
             console.log('create user error', error.message);
         }
